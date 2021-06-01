@@ -22,10 +22,6 @@ set -ex
 export NAMESPACE=tekton-chains
 export SECRET_NAME=signing-secrets
 
-openssl ecparam -genkey -name prime256v1 > ec_private.pem
-openssl pkcs8 -topk8 -in ec_private.pem  -nocrypt -out x509.pem
-openssl ec -in x509.pem -pubout -out x509.pub
-
 kubectl delete secret ${SECRET_NAME} -n ${NAMESPACE} || true
-kubectl create secret generic ${SECRET_NAME} -n ${NAMESPACE} --from-file=x509.pem
+cosign generate-key-pair -k8s ${NAMESPACE}/${SECRET_NAME}
 kubectl delete po  -n ${NAMESPACE} -l app=tekton-chains-controller || true
