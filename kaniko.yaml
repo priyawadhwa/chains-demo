@@ -1,7 +1,7 @@
 apiVersion: tekton.dev/v1beta1
 kind: Task
 metadata:
-  name: kaniko-chains
+  name: kaniko-gcp
 spec:
   description: >-
     This Task builds a simple Dockerfile with kaniko and pushes to a registry.
@@ -24,10 +24,9 @@ spec:
   workspaces:
   - name: source
     description: Holds the context and Dockerfile
-  - name: dockerconfig
-    description: Includes a docker `config.json`
+  - name: credentials
     optional: true
-    mountPath: /kaniko/.docker
+    mountPath: /kaniko/credentials
   results:
   - name: IMAGE_DIGEST
     description: Digest of the image just built.
@@ -54,6 +53,9 @@ spec:
     # makes it explicit that it needs to run as root.
     securityContext:
       runAsUser: 0
+    env:
+    - name: GOOGLE_APPLICATION_CREDENTIALS
+      value: /kaniko/credentials/credentials.json
   - name: write-url
     image: bash
     script: |

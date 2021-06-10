@@ -4,13 +4,13 @@ metadata:
   name: kaniko-run
 spec:
   taskRef:
-    name: kaniko-chains
+    name: kaniko-gcp
   params:
   - name: IMAGE
-    value: gcr.io/priya-wadhwa/kaniko-chains
+    value: ${REGISTRY}/kaniko-chains
   workspaces:
   - name: source
     emptyDir: {}
-  - name: dockerconfig
+  - name: credentials
     secret:
-      secretName: dockerconfig
+      secretName: registry-credentials
