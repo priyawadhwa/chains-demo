@@ -1,0 +1,6 @@
+*.pem
+payload
+signature
+kaniko-run-*.yaml
+*.pub
+*.key

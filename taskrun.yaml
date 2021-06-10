@@ -1,13 +1,13 @@
 apiVersion: tekton.dev/v1beta1
 kind: TaskRun
 metadata:
-  name: kaniko-run
+  generateName: kaniko-run-
 spec:
   taskRef:
     name: kaniko-gcp
   params:
   - name: IMAGE
-    value: ${REGISTRY}/kaniko-chains
+    value: gcr.io/ref-arch-wg/kaniko-chains-demo
   workspaces:
   - name: source
     emptyDir: {}
